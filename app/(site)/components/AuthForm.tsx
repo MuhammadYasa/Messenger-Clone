@@ -8,6 +8,8 @@ import AuthSocialButton from "./AuthSocialButton";
 
 import { BsGithub, BsGoogle } from "react-icons/bs";
 
+import axios from "axios";
+
 type Variant = "LOGIN" | "REGISTER";
 
 const AuthForm = () => {
@@ -38,7 +40,8 @@ const AuthForm = () => {
     setIsLoading(true);
 
     if (variant == "REGISTER") {
-      // axios register
+      // api/register = karena directory
+      axios.post("/api/register", data);
     }
 
     if (variant == "LOGIN") {
