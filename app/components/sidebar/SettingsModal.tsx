@@ -1,15 +1,16 @@
 "use client";
 
-import { User } from "@prisma/client";
 import axios from "axios";
+import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { CldUploadButton } from "next-cloudinary";
+
 import toast from "react-hot-toast";
 import Modal from "../Modal";
 import Input from "../inputs/Input";
 import Image from "next/image";
-import { CldUploadButton } from "next-cloudinary";
 import Button from "../Button";
 
 interface SettingsModalProps {

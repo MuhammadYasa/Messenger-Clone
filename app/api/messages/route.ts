@@ -61,7 +61,7 @@ export async function POST(request: Request) {
       },
     });
 
-    // update pusher untuk chat personal
+    // update pusher untuk chat personal (on server)
     await pusherServer.trigger(conversationId, "messages:new", newMessage);
 
     const lastMessage =

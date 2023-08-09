@@ -22,8 +22,9 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
     axios.post(`/api/conversations/${conversationId}/seen`);
   }, [conversationId]);
 
-  // add pusher effect
+  // add pusher effect (client)
   useEffect(() => {
+    // subscribe
     pusherClient.subscribe(conversationId);
     bottomRef?.current?.scrollIntoView();
 
@@ -34,18 +35,32 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
         if (find(current, { id: message.id })) {
           return current;
         }
-
         return [...current, message];
       });
 
       bottomRef?.current?.scrollIntoView();
     };
 
-    pusherClient.bind("messages:new", messageHandler);
+    const updateMessageHandler = (newMessage: FullMessageType) => {
+      setMessages((current) =>
+        current.map((currentMessage) => {
+          if (currentMessage.id == newMessage.id) {
+            return newMessage;
+          }
+          return currentMessage;
+        })
+      );
+    };
 
+    // bind pusher client
+    pusherClient.bind("messages:new", messageHandler);
+    pusherClient.bind("message:update", updateMessageHandler);
+
+    // unbind & unsubscribe
     return () => {
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind("messages:new", messageHandler);
+      pusherClient.unbind("message:update", updateMessageHandler);
     };
   }, [conversationId]);
 
